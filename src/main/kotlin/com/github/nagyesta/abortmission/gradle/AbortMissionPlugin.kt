@@ -16,56 +16,57 @@ class AbortMissionPlugin : Plugin<Project> {
         const val CONFIGURATION_NAME = "abortMissionReporting"
         const val TASK_NAME = "abortMissionReport"
         const val REPORT_DIR_PROPERTY = "abort-mission.report.directory"
-        const val DEFAULT_VERSION = "+"
-        const val DEFAULT_RELAXED_VALIDATION = false
-        const val DEFAULT_SKIP_TEST_AUTO_SETUP = false
-        const val DEFAULT_REPORT_DIRECTORY = "/reports/abort-mission/"
         const val DEFAULT_JSON_FILE_NAME = "abort-mission-report.json"
         const val DEFAULT_HTML_FILE_NAME = "abort-mission-report.html"
     }
 
     override fun apply(project: Project) {
-        with(project) {
-            extensions.create(EXTENSION_NAME, AbortMissionConfig::class.java, project)
-            configurations.create(CONFIGURATION_NAME)
-                .setVisible(false)
-                .description = "Abort-Mission report generator"
-            afterEvaluate(this@AbortMissionPlugin::afterEvaluateHandler)
-        }
+        project.extensions.create(EXTENSION_NAME, AbortMissionConfig::class.java, project)
+        project.configurations.create(CONFIGURATION_NAME)
+            .setVisible(false)
+            .description = "Abort-Mission report generator"
+        project.afterEvaluate(this@AbortMissionPlugin::afterEvaluateHandler)
     }
 
     private fun afterEvaluateHandler(project: Project) {
-        val abortMissionConfig = project.extensions
-            .findByType(AbortMissionConfig::class.java) ?: AbortMissionConfig(project)
-        val toolVersion = abortMissionConfig.toolVersion
-        val skipTestPluginSetup = abortMissionConfig.skipTestAutoSetup
+        val abortMissionConfig = project.extensions.findByType(AbortMissionConfig::class.java)
+        val toolVersion = abortMissionConfig?.toolVersion ?: AbortMissionConfig.DEFAULT_VERSION
+        val skipTestPluginSetup = abortMissionConfig?.skipTestAutoSetup
+            ?: AbortMissionConfig.DEFAULT_SKIP_TEST_AUTO_SETUP
         project.dependencies.add(CONFIGURATION_NAME, "$GROUP_ID:$ARTIFACT_ID:$toolVersion")
 
-        val abortMissionTask = defineAbortMissionReportTask(abortMissionConfig, project)
+        val reportDirectory = abortMissionConfig?.reportDirectory
+            ?: File(project.buildDir, AbortMissionConfig.DEFAULT_REPORT_DIRECTORY)
+        val abortMissionTask = defineAbortMissionReportTask(
+            reportDirectory,
+            abortMissionConfig?.relaxedValidation ?: AbortMissionConfig.DEFAULT_RELAXED_VALIDATION,
+            project
+        )
         if (!skipTestPluginSetup) {
-            setupTestTask(project, abortMissionConfig, abortMissionTask)
+            setupTestTask(project, reportDirectory, abortMissionTask)
         }
     }
 
     private fun setupTestTask(
         project: Project,
-        abortMissionConfig: AbortMissionConfig,
+        reportDirectory: File,
         abortMissionTask: JavaExec
     ) {
         project.tasks.withType(Test::class.java).findByName("test")!!.apply {
             this.systemProperty(
-                REPORT_DIR_PROPERTY, abortMissionConfig.reportDirectory.absolutePath
+                REPORT_DIR_PROPERTY, reportDirectory.absolutePath
             )
             this.finalizedBy(abortMissionTask)
         }
     }
 
     private fun defineAbortMissionReportTask(
-        abortMissionConfig: AbortMissionConfig,
+        reportDirectory: File,
+        relaxedValidation: Boolean,
         project: Project
     ): JavaExec {
-        val htmlFile = File(abortMissionConfig.reportDirectory, DEFAULT_HTML_FILE_NAME)
-        val jsonFile = File(abortMissionConfig.reportDirectory, DEFAULT_JSON_FILE_NAME)
+        val htmlFile = File(reportDirectory, DEFAULT_HTML_FILE_NAME)
+        val jsonFile = File(reportDirectory, DEFAULT_JSON_FILE_NAME)
         return project.tasks.create(TASK_NAME, JavaExec::class.java) { javaTask ->
             javaTask.inputs.file(jsonFile)
             javaTask.outputs.file(htmlFile)
@@ -74,7 +75,7 @@ class AbortMissionPlugin : Plugin<Project> {
             javaTask.args = listOf(
                 "--report.input=$jsonFile",
                 "--report.output=$htmlFile",
-                "--report.relaxed=${abortMissionConfig.relaxedValidation}"
+                "--report.relaxed=${relaxedValidation}"
             )
             javaTask.logging.captureStandardOutput(LogLevel.INFO)
             javaTask.logging.captureStandardError(LogLevel.ERROR)

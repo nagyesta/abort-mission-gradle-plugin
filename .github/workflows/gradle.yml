@@ -32,9 +32,3 @@ jobs:
         run: ./gradlew tagVersion build -PgithubToken=${{ secrets.PUBLISH_KEY }} -PgithubUser=${{ secrets.PUBLISH_USER_NAME }}
       - name: Publish with Gradle
         run: ./gradlew publish publishPlugins -PgithubToken=${{ secrets.PUBLISH_KEY }} -PgithubUser=${{ secrets.PUBLISH_USER_NAME }} -Pgradle.publish.key=${{ secrets.GRADLE_KEY }} -Pgradle.publish.secret=${{ secrets.GRADLE_SECRET }}
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@7d5dfa54903bd909319c580a00535b483d1efcf3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./build/reports/jacoco/report.xml
-          fail_ci_if_error: false

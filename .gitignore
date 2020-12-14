@@ -62,3 +62,11 @@ out/
 
 ### VS Code ###
 */.vscode/
+
+## examples
+
+gradle-tests/*/.gradle
+gradle-tests/*/gradle
+gradle-tests/*/build
+gradle-tests/*/gradlew
+gradle-tests/*/gradlew.bat
