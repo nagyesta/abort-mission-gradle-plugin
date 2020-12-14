@@ -7,7 +7,6 @@ plugins {
 }
 
 group = "com.github.nagyesta.abort-mission"
-version = "0.2.1"
 
 versioner {
     startFrom {
@@ -21,7 +20,7 @@ versioner {
         patch = "{patch}"
     }
     pattern {
-        pattern = "%M.%m.%p.1"
+        pattern = "%M.%m.%p"
     }
     git {
         authentication {
@@ -38,6 +37,8 @@ versioner {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.72")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
+    testImplementation(gradleTestKit())
 }
 
 gradlePlugin {
@@ -57,14 +58,15 @@ pluginBundle {
     tags = listOf("testing", "jupiter", "testng", "abort-mission")
 }
 
-val javadocJar = tasks.register<Jar>("javadocJar") {
-    archiveClassifier.set("javadoc")
-    from(tasks.named("javadoc"))
-}
+//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+//    kotlinOptions {
+//        freeCompilerArgs = listOf("-Xjsr305=strict")
+//        jvmTarget = "1.8"
+//    }
+//}
 
-val sourcesJar = tasks.register<Jar>("sourcesJar") {
-    archiveClassifier.set("sources")
-    from(sourceSets.main.get().allSource)
+tasks.test {
+    useJUnitPlatform()
 }
 
 repositories {
