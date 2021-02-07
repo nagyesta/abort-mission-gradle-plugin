@@ -23,32 +23,15 @@ to find out more.
 
 ### Minimal configuration
 
-#### settings.gradle - Only in case the Plugin Portal is not working for some reason
-
-```groovy
-pluginManagement {
-    repositories {
-        maven {
-            name "BintrayNagyEsta"
-            url  "https://dl.bintray.com/nagyesta/releases-maven"
-        }
-        gradlePluginPortal()
-    }
-}
-```
-
 #### build.gradle
 
 ```groovy
 plugins {
-    id "com.github.nagyesta.abort-mission-gradle-plugin" version "1.0.0"
+    id "com.github.nagyesta.abort-mission-gradle-plugin" version "1.1.0"
 }
 
 repositories {
-    maven {
-        name "BintrayNagyEsta"
-        url "https://dl.bintray.com/nagyesta/releases-maven"
-    }
+    mavenCentral()
 }
 ```
 

@@ -6,6 +6,13 @@ name: JavaCI
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - 'README.md'
+      - '**/README.md'
+      - 'SECURITY.md'
+      - 'LICENSE'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/assets/**'
 
 jobs:
   build:
@@ -29,6 +36,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-wrapper-
       - name: Build with Gradle
-        run: ./gradlew tagVersion build -PgithubToken=${{ secrets.PUBLISH_KEY }} -PgithubUser=${{ secrets.PUBLISH_USER_NAME }}
+        run: >
+          ./gradlew tagVersion build
+          -PgithubUser=${{ secrets.PUBLISH_USER_NAME }}
+          -PgithubToken=${{ secrets.PUBLISH_KEY }}
       - name: Publish with Gradle
-        run: ./gradlew publish publishPlugins -PgithubToken=${{ secrets.PUBLISH_KEY }} -PgithubUser=${{ secrets.PUBLISH_USER_NAME }} -Pgradle.publish.key=${{ secrets.GRADLE_KEY }} -Pgradle.publish.secret=${{ secrets.GRADLE_SECRET }}
+        run: >
+          ./gradlew publish publishPlugins
+          -PgithubUser=${{ secrets.PUBLISH_USER_NAME }}
+          -PgithubToken=${{ secrets.PUBLISH_KEY }}
+          -Pgradle.publish.key=${{ secrets.GRADLE_KEY }}
+          -Pgradle.publish.secret=${{ secrets.GRADLE_SECRET }}
