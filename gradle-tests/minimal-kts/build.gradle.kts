@@ -8,7 +8,7 @@ version = "0.0.1"
 
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
-    testImplementation("com.github.nagyesta.abort-mission.boosters:abort.booster-junit-jupiter:2.3.0")
+    testImplementation("com.github.nagyesta.abort-mission.boosters:abort.booster-junit-jupiter:2.5.0")
 }
 
 tasks.withType<Test> {
@@ -16,9 +16,5 @@ tasks.withType<Test> {
 }
 
 repositories {
-    maven {
-        name = "BintrayNagyEstaMaven"
-        url = uri("https://dl.bintray.com/nagyesta/releases-maven")
-    }
     mavenCentral()
 }

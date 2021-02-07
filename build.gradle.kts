@@ -58,13 +58,6 @@ pluginBundle {
     tags = listOf("testing", "jupiter", "testng", "abort-mission")
 }
 
-//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-//    kotlinOptions {
-//        freeCompilerArgs = listOf("-Xjsr305=strict")
-//        jvmTarget = "1.8"
-//    }
-//}
-
 tasks.test {
     useJUnitPlatform()
 }
