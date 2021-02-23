@@ -71,12 +71,11 @@ class AbortMissionPlugin : Plugin<Project> {
             javaTask.inputs.file(jsonFile)
             javaTask.outputs.file(htmlFile)
             javaTask.main = "org.springframework.boot.loader.JarLauncher"
+            javaTask.workingDir = project.projectDir
             javaTask.classpath = project.configurations.findByName(CONFIGURATION_NAME)!!.asFileTree
-            javaTask.args = listOf(
-                "--report.input=$jsonFile",
-                "--report.output=$htmlFile",
-                "--report.relaxed=${relaxedValidation}"
-            )
+            javaTask.systemProperty("report.input", jsonFile.relativeTo(project.projectDir))
+            javaTask.systemProperty("report.output", htmlFile.relativeTo(project.projectDir))
+            javaTask.systemProperty("report.relaxed", relaxedValidation)
             javaTask.logging.captureStandardOutput(LogLevel.INFO)
             javaTask.logging.captureStandardError(LogLevel.ERROR)
         }
