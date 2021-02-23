@@ -24,6 +24,16 @@ internal class AbortMissionPluginTest {
         //then
         assertTrue(result.output.contains("abortMissionReport"))
         assertEquals(TaskOutcome.SUCCESS, result.task(":abortMissionReport")?.outcome)
+        assertValidFile("$path/build/reports/abort-mission/abort-mission-report.html")
+        assertValidFile("$path/build/reports/abort-mission/abort-mission-report.json")
+    }
+
+    private fun assertValidFile(path: String) {
+        val file = File(path)
+        assertTrue(file.exists())
+        assertTrue(file.readLines().stream().anyMatch {
+            it.contains("HelloTest")
+        })
     }
 
     @ParameterizedTest
