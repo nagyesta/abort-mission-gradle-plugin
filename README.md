@@ -28,7 +28,7 @@ to find out more.
 
 ```groovy
 plugins {
-    id "com.github.nagyesta.abort-mission-gradle-plugin" version "1.1.0"
+    id "com.github.nagyesta.abort-mission-gradle-plugin" version "2.0.0"
 }
 
 repositories {
@@ -59,6 +59,23 @@ abortMission {
     //Sets the directory where we want to look for the JSON input file
     //and save the HTML output
     reportDirectory file("${buildDir}/reports/abort-mission/")
+    //Controls whether the report generator should fail if any failed
+    //test cases where in the report
+    failOnError false
+    //The Gradle artifact coordinates for the Strongback implementation
+    //we want to use. The format must be "group:artifact:version" or
+    //"group:artifact" if we want to use the toolVersion value here too
+    strongbackCoordinates "com.github.nagyesta.abort-mission.strongback:abort.strongback-rmi-supplier"
+    //The port we want to use for the Strongback
+    strongbackPort 29542
+    //The optional password used for authentication when the Strongback
+    //service is started or stopped
+    strongbackPassword "S3cr3t"
+    //Indicates whether we need to use an externally provided server
+    //instead of the embedded.
+    strongbackUseExternal false
+    //The number of milliseconds we want to wait for Strongback startup
+    strongbackDelay 50L
 }
 ```
 
