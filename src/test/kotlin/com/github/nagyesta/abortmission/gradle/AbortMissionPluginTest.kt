@@ -22,7 +22,34 @@ internal class AbortMissionPluginTest {
             .build()
 
         //then
-        assertTrue(result.output.contains("abortMissionReport"))
+        val output = result.output
+        assertTrue(output.contains("abortMissionReport"))
+        assertFalse(output.contains("abortMissionStrongbackErect"))
+        assertFalse(output.contains("abortMissionStrongbackRetract"))
+        assertEquals(TaskOutcome.SUCCESS, result.task(":abortMissionReport")?.outcome)
+        assertValidFile("$path/build/reports/abort-mission/abort-mission-report.html")
+        assertValidFile("$path/build/reports/abort-mission/abort-mission-report.json")
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["gradle-tests/minimal-kts-strongback", "gradle-tests/minimal-groovy-strongback"])
+    fun testApplyShouldApplyPluginWithStrongbackAndDoConfigWhenCalledWithAutoConfiguration(path: String) {
+        //given
+
+        //when
+        val result = GradleRunner.create()
+            .withPluginClasspath()
+            .withProjectDir(File(path))
+            .withArguments("clean", "test")
+            .build()
+
+        //then
+        val output = result.output
+        assertTrue(output.contains("abortMissionReport"))
+        assertTrue(output.contains("abortMissionStrongbackErect"))
+        assertTrue(output.contains("abortMissionStrongbackRetract"))
+        assertEquals(TaskOutcome.SUCCESS, result.task(":abortMissionStrongbackErect")?.outcome)
+        assertEquals(TaskOutcome.SUCCESS, result.task(":abortMissionStrongbackRetract")?.outcome)
         assertEquals(TaskOutcome.SUCCESS, result.task(":abortMissionReport")?.outcome)
         assertValidFile("$path/build/reports/abort-mission/abort-mission-report.html")
         assertValidFile("$path/build/reports/abort-mission/abort-mission-report.json")
