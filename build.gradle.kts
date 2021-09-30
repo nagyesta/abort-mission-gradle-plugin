@@ -1,6 +1,6 @@
 plugins {
     `java-gradle-plugin`
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.5.0"
     `maven-publish`
     id("com.gradle.plugin-publish") version "0.12.0"
     id("io.toolebox.git-versioner") version "1.6.5"
@@ -36,8 +36,8 @@ versioner {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.72")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.0")
     testImplementation(gradleTestKit())
 }
 

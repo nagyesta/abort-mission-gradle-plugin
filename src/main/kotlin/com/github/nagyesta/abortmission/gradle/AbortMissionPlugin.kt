@@ -1,6 +1,9 @@
 package com.github.nagyesta.abortmission.gradle
 
-import org.gradle.api.*
+import org.gradle.api.DefaultTask
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.file.FileTree
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.JavaExec
@@ -103,7 +106,7 @@ class AbortMissionPlugin : Plugin<Project> {
         return project.tasks.create(TASK_NAME, JavaExec::class.java) { javaTask ->
             javaTask.inputs.file(jsonFile)
             javaTask.outputs.file(htmlFile)
-            javaTask.main = "org.springframework.boot.loader.JarLauncher"
+            javaTask.mainClass.set("org.springframework.boot.loader.JarLauncher")
             javaTask.workingDir = project.projectDir
             javaTask.classpath = project.configurations.findByName(CONFIGURATION_NAME)!!.asFileTree
             javaTask.systemProperty("report.input", jsonFile.relativeTo(project.projectDir))
@@ -121,7 +124,7 @@ class AbortMissionPlugin : Plugin<Project> {
         val strongbackJars = project.configurations.findByName(STRONGBACK_CONFIGURATION_NAME)
         val classPath = strongbackJars!!.asFileTree
         val javaTask = project.tasks.create(STRONGBACK_ERECT_JAVA_TASK_NAME, JavaExec::class.java) { javaTask ->
-            javaTask.main = "com.github.nagyesta.abortmission.strongback.StrongbackErectorMain"
+            javaTask.mainClass.set("com.github.nagyesta.abortmission.strongback.StrongbackErectorMain")
             addCommonStrongbackProperties(javaTask, abortMissionConfig, classPath, project.projectDir)
             redirectLogs(javaTask)
         }
@@ -147,7 +150,7 @@ class AbortMissionPlugin : Plugin<Project> {
         val classPath = project.configurations.findByName(STRONGBACK_CONFIGURATION_NAME)!!.asFileTree
         return project.tasks.create(STRONGBACK_RETRACT_TASK_NAME, JavaExec::class.java) { javaTask ->
             javaTask.outputs.file(File(abortMissionConfig.reportDirectory, DEFAULT_JSON_FILE_NAME))
-            javaTask.main = "com.github.nagyesta.abortmission.strongback.StrongbackRetractorMain"
+            javaTask.mainClass.set("com.github.nagyesta.abortmission.strongback.StrongbackRetractorMain")
             addCommonStrongbackProperties(javaTask, abortMissionConfig, classPath, project.projectDir)
             disableUpToDateChecks(javaTask)
             redirectLogs(javaTask)
