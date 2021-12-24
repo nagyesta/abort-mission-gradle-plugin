@@ -89,7 +89,7 @@ class AbortMissionPlugin : Plugin<Project> {
         project: Project
     ): Boolean {
         val testImpl = project.configurations.findByName(TEST_IMPLEMENTATION_CONFIGURATION_NAME)
-        return testImpl.dependencies?.any { dependency ->
+        return testImpl?.dependencies?.any { dependency ->
             dependency.group.equals(CUCUMBER_BOOSTER_GROUP_ID)
                     && dependency.name.equals(CUCUMBER_BOOSTER_ARTIFACT_ID)
         } == true
@@ -122,7 +122,7 @@ class AbortMissionPlugin : Plugin<Project> {
             javaTask.outputs.file(htmlFile)
             javaTask.mainClass.set("org.springframework.boot.loader.JarLauncher")
             javaTask.workingDir = project.projectDir
-            javaTask.classpath = project.configurations.findByName(CONFIGURATION_NAME).asFileTree
+            javaTask.classpath = project.configurations.findByName(CONFIGURATION_NAME)!!.asFileTree
             javaTask.systemProperty("report.input", jsonFile.relativeTo(project.projectDir))
             javaTask.systemProperty("report.output", htmlFile.relativeTo(project.projectDir))
             javaTask.systemProperty("report.relaxed", relaxedValidation)
@@ -136,7 +136,7 @@ class AbortMissionPlugin : Plugin<Project> {
         project: Project
     ): AsyncJavaExecTask {
         val strongbackJars = project.configurations.findByName(STRONGBACK_CONFIGURATION_NAME)
-        val classPath = strongbackJars.asFileTree
+        val classPath = strongbackJars!!.asFileTree
         val javaTask = project.tasks.create(STRONGBACK_ERECT_JAVA_TASK_NAME, JavaExec::class.java) { javaTask ->
             javaTask.mainClass.set("com.github.nagyesta.abortmission.strongback.StrongbackErectorMain")
             addCommonStrongbackProperties(javaTask, abortMissionConfig, classPath, project.projectDir)
@@ -161,7 +161,7 @@ class AbortMissionPlugin : Plugin<Project> {
         erectTask: AsyncJavaExecTask,
         project: Project
     ): JavaExec {
-        val classPath = project.configurations.findByName(STRONGBACK_CONFIGURATION_NAME).asFileTree
+        val classPath = project.configurations.findByName(STRONGBACK_CONFIGURATION_NAME)!!.asFileTree
         return project.tasks.create(STRONGBACK_RETRACT_TASK_NAME, JavaExec::class.java) { javaTask ->
             javaTask.outputs.file(File(abortMissionConfig.reportDirectory, DEFAULT_JSON_FILE_NAME))
             javaTask.mainClass.set("com.github.nagyesta.abortmission.strongback.StrongbackRetractorMain")
@@ -194,7 +194,7 @@ class AbortMissionPlugin : Plugin<Project> {
         block: Test.() -> Unit
     ) {
         if (!skipTestPluginSetup) {
-            project.tasks.withType(Test::class.java).findByName("test").apply(block)
+            project.tasks.withType(Test::class.java).findByName("test")!!.apply(block)
         }
     }
 
