@@ -22,6 +22,9 @@ class AbortMissionPlugin : Plugin<Project> {
 
         const val CONFIGURATION_NAME = "abortMissionReporting"
         const val STRONGBACK_CONFIGURATION_NAME = "abortMissionStrongback"
+        const val TEST_IMPLEMENTATION_CONFIGURATION_NAME = "testImplementation"
+        const val CUCUMBER_BOOSTER_GROUP_ID = "com.github.nagyesta.abort-mission.boosters"
+        const val CUCUMBER_BOOSTER_ARTIFACT_ID = "abort.booster-cucumber-jvm"
 
         const val TASK_NAME = "abortMissionReport"
         const val STRONGBACK_ERECT_TASK_NAME = "abortMissionStrongbackErect"
@@ -36,17 +39,17 @@ class AbortMissionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         project.extensions.create(EXTENSION_NAME, AbortMissionConfig::class.java, project)
         project.configurations.create(CONFIGURATION_NAME)
-                .setVisible(true)
-                .description = "Abort-Mission report generator"
+            .setVisible(true)
+            .description = "Abort-Mission report generator"
         project.configurations.create(STRONGBACK_CONFIGURATION_NAME)
-                .setVisible(true)
-                .description = "Abort-Mission Strongback classpath"
+            .setVisible(true)
+            .description = "Abort-Mission Strongback classpath"
         project.afterEvaluate(this@AbortMissionPlugin::afterEvaluateHandler)
     }
 
     private fun afterEvaluateHandler(project: Project) {
         val abortMissionConfig = project.extensions
-                .findByType(AbortMissionConfig::class.java) ?: AbortMissionConfig(project)
+            .findByType(AbortMissionConfig::class.java) ?: AbortMissionConfig(project)
         project.dependencies.add(CONFIGURATION_NAME, "$GROUP_ID:$ARTIFACT_ID:${abortMissionConfig.toolVersion}")
 
         val abortMissionTask = defineAbortMissionReportTask(abortMissionConfig, project)
@@ -56,10 +59,10 @@ class AbortMissionPlugin : Plugin<Project> {
         if (abortMissionConfig.strongbackCoordinates.isNotBlank()) {
             val erectTask = defineAbortMissionStrongbackErectTask(abortMissionConfig, project)
             defineAbortMissionStrongbackRetractTask(
-                    abortMissionConfig,
-                    abortMissionTask,
-                    erectTask,
-                    project
+                abortMissionConfig,
+                abortMissionTask,
+                erectTask,
+                project
             )
         } else {
             setupTestTask(abortMissionConfig, abortMissionTask, project)
@@ -67,8 +70,8 @@ class AbortMissionPlugin : Plugin<Project> {
     }
 
     private fun addStrongbackDependencies(
-            abortMissionConfig: AbortMissionConfig,
-            project: Project
+        abortMissionConfig: AbortMissionConfig,
+        project: Project
     ) {
         val strongbackCoordinates = abortMissionConfig.strongbackCoordinates
         val toolVersion = abortMissionConfig.toolVersion
@@ -82,14 +85,24 @@ class AbortMissionPlugin : Plugin<Project> {
         }
     }
 
+    private fun hasCucumberDependency(
+        project: Project
+    ): Boolean {
+        val testImpl = project.configurations.findByName(TEST_IMPLEMENTATION_CONFIGURATION_NAME)
+        return testImpl?.dependencies?.any { dependency ->
+            dependency.group.equals(CUCUMBER_BOOSTER_GROUP_ID)
+                    && dependency.name.equals(CUCUMBER_BOOSTER_ARTIFACT_ID)
+        } == true
+    }
+
     private fun hasNoVersion(strongbackCoordinates: String) =
-            (strongbackCoordinates.split(':').size == 2
-                    && strongbackCoordinates.startsWith(STRONGBACK_GROUP_ID))
+        (strongbackCoordinates.split(':').size == 2
+                && strongbackCoordinates.startsWith(STRONGBACK_GROUP_ID))
 
     private fun setupTestTask(
-            abortMissionConfig: AbortMissionConfig,
-            abortMissionTask: JavaExec,
-            project: Project
+        abortMissionConfig: AbortMissionConfig,
+        abortMissionTask: JavaExec,
+        project: Project
     ) {
         forEachTestTasks(project, abortMissionConfig.skipTestAutoSetup) {
             this.systemProperty(REPORT_DIR_PROPERTY, abortMissionConfig.reportDirectory.absolutePath)
@@ -98,11 +111,12 @@ class AbortMissionPlugin : Plugin<Project> {
     }
 
     private fun defineAbortMissionReportTask(
-            abortMissionConfig: AbortMissionConfig,
-            project: Project
+        abortMissionConfig: AbortMissionConfig,
+        project: Project
     ): JavaExec {
         val htmlFile = File(abortMissionConfig.reportDirectory, DEFAULT_HTML_FILE_NAME)
         val jsonFile = File(abortMissionConfig.reportDirectory, DEFAULT_JSON_FILE_NAME)
+        val relaxedValidation = abortMissionConfig.relaxedValidation || hasCucumberDependency(project)
         return project.tasks.create(TASK_NAME, JavaExec::class.java) { javaTask ->
             javaTask.inputs.file(jsonFile)
             javaTask.outputs.file(htmlFile)
@@ -111,15 +125,15 @@ class AbortMissionPlugin : Plugin<Project> {
             javaTask.classpath = project.configurations.findByName(CONFIGURATION_NAME)!!.asFileTree
             javaTask.systemProperty("report.input", jsonFile.relativeTo(project.projectDir))
             javaTask.systemProperty("report.output", htmlFile.relativeTo(project.projectDir))
-            javaTask.systemProperty("report.relaxed", abortMissionConfig.relaxedValidation)
+            javaTask.systemProperty("report.relaxed", relaxedValidation)
             javaTask.systemProperty("report.failOnError", abortMissionConfig.failOnError)
             redirectLogs(javaTask)
         }
     }
 
     private fun defineAbortMissionStrongbackErectTask(
-            abortMissionConfig: AbortMissionConfig,
-            project: Project
+        abortMissionConfig: AbortMissionConfig,
+        project: Project
     ): AsyncJavaExecTask {
         val strongbackJars = project.configurations.findByName(STRONGBACK_CONFIGURATION_NAME)
         val classPath = strongbackJars!!.asFileTree
@@ -142,10 +156,10 @@ class AbortMissionPlugin : Plugin<Project> {
     }
 
     private fun defineAbortMissionStrongbackRetractTask(
-            abortMissionConfig: AbortMissionConfig,
-            reportTask: JavaExec,
-            erectTask: AsyncJavaExecTask,
-            project: Project
+        abortMissionConfig: AbortMissionConfig,
+        reportTask: JavaExec,
+        erectTask: AsyncJavaExecTask,
+        project: Project
     ): JavaExec {
         val classPath = project.configurations.findByName(STRONGBACK_CONFIGURATION_NAME)!!.asFileTree
         return project.tasks.create(STRONGBACK_RETRACT_TASK_NAME, JavaExec::class.java) { javaTask ->
@@ -154,8 +168,10 @@ class AbortMissionPlugin : Plugin<Project> {
             addCommonStrongbackProperties(javaTask, abortMissionConfig, classPath, project.projectDir)
             disableUpToDateChecks(javaTask)
             redirectLogs(javaTask)
-            javaTask.systemProperty(REPORT_DIR_PROPERTY,
-                    abortMissionConfig.reportDirectory.relativeTo(project.projectDir))
+            javaTask.systemProperty(
+                REPORT_DIR_PROPERTY,
+                abortMissionConfig.reportDirectory.relativeTo(project.projectDir)
+            )
             forEachTestTasks(project, abortMissionConfig.skipTestAutoSetup) {
                 this.finalizedBy(javaTask)
             }
@@ -172,9 +188,11 @@ class AbortMissionPlugin : Plugin<Project> {
         }
     }
 
-    private fun forEachTestTasks(project: Project,
-                                 skipTestPluginSetup: Boolean,
-                                 block: Test.() -> Unit) {
+    private fun forEachTestTasks(
+        project: Project,
+        skipTestPluginSetup: Boolean,
+        block: Test.() -> Unit
+    ) {
         if (!skipTestPluginSetup) {
             project.tasks.withType(Test::class.java).findByName("test")!!.apply(block)
         }
@@ -186,10 +204,10 @@ class AbortMissionPlugin : Plugin<Project> {
     }
 
     private fun addCommonStrongbackProperties(
-            javaTask: JavaExec,
-            abortMissionConfig: AbortMissionConfig,
-            classPath: FileTree,
-            workDir: File
+        javaTask: JavaExec,
+        abortMissionConfig: AbortMissionConfig,
+        classPath: FileTree,
+        workDir: File
     ) {
         javaTask.classpath = classPath
         javaTask.workingDir = workDir
@@ -197,8 +215,10 @@ class AbortMissionPlugin : Plugin<Project> {
             javaTask.systemProperty("abort-mission.telemetry.server.useExternal", true)
         }
         if (abortMissionConfig.strongbackPassword.isNotBlank()) {
-            javaTask.systemProperty("abort-mission.telemetry.server.password",
-                    abortMissionConfig.strongbackPassword)
+            javaTask.systemProperty(
+                "abort-mission.telemetry.server.password",
+                abortMissionConfig.strongbackPassword
+            )
         }
         if (abortMissionConfig.strongbackPort > 0) {
             javaTask.systemProperty("abort-mission.telemetry.server.port", abortMissionConfig.strongbackPort)
