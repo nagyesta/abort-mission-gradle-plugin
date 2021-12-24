@@ -28,7 +28,7 @@ to find out more.
 
 ```groovy
 plugins {
-    id "com.github.nagyesta.abort-mission-gradle-plugin" version "2.0.2"
+    id "com.github.nagyesta.abort-mission-gradle-plugin" version "2.1.0"
 }
 
 repositories {
@@ -54,7 +54,9 @@ abortMission {
     // - Setting the "abortMissionReport" task to the "finalize" the
     //   test task 
     skipTestAutoSetup false
-    //Define whether we want to use relaxed schema for JSON validation
+    //Define whether we want to use relaxed schema for JSON validation.
+    //Particularly useful when the Cucumber Booster is used or in case of
+    //a very special class name that does not match the basic regexp used.
     relaxedValidation false
     //Sets the directory where we want to look for the JSON input file
     //and save the HTML output
