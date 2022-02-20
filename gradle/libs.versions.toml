@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.6.0"
+kotlin = "1.6.10"
 jupiter = "5.8.2"
 abortMission = "2.8.10"
 
