@@ -58,9 +58,7 @@ abortMission {
     //as well when test autoconfiguration is done.
     //WARNING: If you are using a strongback, you will need to take care
     //of the full lifecycle externally due to difficulties with Gradle
-    //background threads. This should include startup, shutdown as well
-    //as reporting after the last test fork is shut down in order to get
-    //the full report
+    //background threads. This should include startup, shutdown
     skipStrongbackConfig true
     //Define whether we want to use relaxed schema for JSON validation.
     //Particularly useful when the Cucumber Booster is used or in case of
