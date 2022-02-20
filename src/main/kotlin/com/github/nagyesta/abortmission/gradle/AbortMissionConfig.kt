@@ -9,10 +9,9 @@ open class AbortMissionConfig(project: Project) {
     var reportDirectory: File
     var toolVersion: String
     var failOnError: Boolean
-    var strongbackCoordinates: String
     var strongbackPort: Int
     var strongbackPassword: String
-    var strongbackUseExternal: Boolean
+    var skipStrongbackConfig: Boolean
     var strongbackDelay: Long
 
     companion object {
@@ -21,10 +20,9 @@ open class AbortMissionConfig(project: Project) {
         const val DEFAULT_SKIP_TEST_AUTO_SETUP = false
         const val DEFAULT_REPORT_DIRECTORY = "/reports/abort-mission/"
         const val DEFAULT_FAIL_ON_ERROR = false
-        const val DEFAULT_STRONGBACK_COORDINATES = ""
         const val DEFAULT_STRONGBACK_PORT = 0
         const val DEFAULT_STRONGBACK_PASSWORD = ""
-        const val DEFAULT_STRONGBACK_USE_EXTERNAL = false
+        const val DEFAULT_SKIP_STRONGBACK_CONFIG = true
         const val DEFAULT_STRONGBACK_DELAY = 50L
     }
 
@@ -34,10 +32,9 @@ open class AbortMissionConfig(project: Project) {
         reportDirectory = File(project.buildDir, DEFAULT_REPORT_DIRECTORY)
         toolVersion = DEFAULT_VERSION
         failOnError = DEFAULT_FAIL_ON_ERROR
-        strongbackCoordinates = DEFAULT_STRONGBACK_COORDINATES
         strongbackPort = DEFAULT_STRONGBACK_PORT
         strongbackPassword = DEFAULT_STRONGBACK_PASSWORD
-        strongbackUseExternal = DEFAULT_STRONGBACK_USE_EXTERNAL
+        skipStrongbackConfig = DEFAULT_SKIP_STRONGBACK_CONFIG
         strongbackDelay = DEFAULT_STRONGBACK_DELAY
     }
 }

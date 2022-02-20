@@ -1,9 +1,11 @@
 plugins {
     `java-gradle-plugin`
-    kotlin("jvm") version "1.6.0"
+    kotlin("jvm") version libs.versions.kotlin.get()
     `maven-publish`
-    id("com.gradle.plugin-publish") version "0.18.0"
-    id("io.toolebox.git-versioner") version "1.6.5"
+    alias(libs.plugins.plugin.publish)
+    alias(libs.plugins.versioner)
+    alias(libs.plugins.index.scan)
+    alias(libs.plugins.owasp.dependencycheck)
 }
 
 group = "com.github.nagyesta.abort-mission"
@@ -36,9 +38,10 @@ versioner {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.0")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    implementation(libs.kotlin.stdlib)
+    testImplementation(libs.jupiter.core)
     testImplementation(gradleTestKit())
+    testImplementation(libs.abort.mission.strongback.rmi)
 }
 
 gradlePlugin {
