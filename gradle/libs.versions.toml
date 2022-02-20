@@ -1,0 +1,20 @@
+[versions]
+kotlin = "1.6.0"
+jupiter = "5.8.2"
+abortMission = "2.8.10"
+
+pluginPublishPlugin = "0.20.0"
+gitVersionerPlugin = "1.6.7"
+indexScanPlugin = "2.2.3"
+owaspPlugin = "6.5.3"
+
+[libraries]
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+jupiter-core = { module = "org.junit.jupiter:junit-jupiter", version.ref = "jupiter" }
+abort-mission-strongback-rmi = { module = "com.github.nagyesta.abort-mission.strongback:abort.strongback-rmi-supplier", version.ref = "abortMission" }
+
+[plugins]
+plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "pluginPublishPlugin" }
+versioner = { id = "io.toolebox.git-versioner", version.ref = "gitVersionerPlugin" }
+index-scan = { id = "org.sonatype.gradle.plugins.scan", version.ref = "indexScanPlugin" }
+owasp-dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "owaspPlugin" }

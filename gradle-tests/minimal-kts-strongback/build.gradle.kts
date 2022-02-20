@@ -7,14 +7,13 @@ group = "com.github.nagyesta.abort-mission.test"
 version = "0.0.1"
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
-    testImplementation("com.github.nagyesta.abort-mission.boosters:abort.booster-junit-jupiter:2.6.1")
-    testImplementation("com.github.nagyesta.abort-mission.strongback:abort.strongback-rmi-supplier:2.6.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    testImplementation("com.github.nagyesta.abort-mission.boosters:abort.booster-junit-jupiter:2.8.10")
+    testImplementation("com.github.nagyesta.abort-mission.strongback:abort.strongback-rmi-supplier:2.8.10")
 }
 
 abortMission {
-    strongbackCoordinates = "com.github.nagyesta.abort-mission.strongback:abort.strongback-rmi-supplier"
-    strongbackDelay = 10L
+    skipStrongbackConfig = false
     strongbackPort = 30001
 }
 
