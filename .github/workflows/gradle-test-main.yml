@@ -1,29 +1,19 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: JavaCI-PR
+name: JavaCI
 
 on:
-  pull_request:
+  push:
     branches: [ main ]
-    paths-ignore:
-      - 'README.md'
-      - '**/README.md'
-      - 'SECURITY.md'
-      - 'LICENSE'
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.github/assets/**'
-      - 'renovate.json'
-      - '.whitesource'
+    paths:
+      - 'gradle/libs.versions.toml'
 
 permissions: read-all
 
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, windows-latest ]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
       # Set up build environment
@@ -44,3 +34,4 @@ jobs:
             ${{ runner.os }}-gradle-wrapper-
       - name: Build with Gradle
         run: ./gradlew printVersion build
+

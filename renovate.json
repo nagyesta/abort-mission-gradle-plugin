@@ -3,5 +3,10 @@
     "config:base"
   ],
   "commitMessageSuffix": "{patch}",
+  "github-actions": {
+    "pinDigests": true
+  },
+  "automergeStrategy": "fast-forward",
+  "automerge": true,
   "ignorePaths": [ ".github/workflows/**", "gradle-tests/**" ]
 }
