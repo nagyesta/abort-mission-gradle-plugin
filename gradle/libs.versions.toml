@@ -6,7 +6,7 @@ abortMission = "2.8.31"
 pluginPublishPlugin = "0.21.0"
 gitVersionerPlugin = "1.6.7"
 indexScanPlugin = "2.2.3"
-owaspPlugin = "7.0.1"
+owaspPlugin = "7.0.3"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
