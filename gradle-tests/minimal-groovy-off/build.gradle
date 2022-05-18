@@ -17,7 +17,7 @@ tasks.named('test') {
 
 abortMission {
     skipTestAutoSetup = true
-    toolVersion = "2.8.10"
+    toolVersion = "3.0.0"
 }
 
 repositories {
