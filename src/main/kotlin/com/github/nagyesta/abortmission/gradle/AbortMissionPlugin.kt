@@ -90,13 +90,15 @@ class AbortMissionPlugin : Plugin<Project> {
         return project.tasks.create(TASK_NAME, JavaExec::class.java) { javaTask ->
             javaTask.inputs.file(jsonFile)
             javaTask.outputs.file(htmlFile)
-            javaTask.mainClass.set("org.springframework.boot.loader.JarLauncher")
+            javaTask.mainClass.set("com.github.nagyesta.abortmission.reporting.AbortMissionFlightEvaluationReportApp")
             javaTask.workingDir = project.projectDir
             javaTask.classpath = project.configurations.findByName(CONFIGURATION_NAME)!!.asFileTree
-            javaTask.systemProperty("report.input", jsonFile.relativeTo(project.projectDir))
-            javaTask.systemProperty("report.output", htmlFile.relativeTo(project.projectDir))
-            javaTask.systemProperty("report.relaxed", relaxedValidation)
-            javaTask.systemProperty("report.failOnError", abortMissionConfig.failOnError)
+            javaTask.args = listOf(
+                "--report.input=${jsonFile.relativeTo(project.projectDir)}",
+                "--report.output=${htmlFile.relativeTo(project.projectDir)}",
+                "--report.relaxed=$relaxedValidation",
+                "--report.failOnError=${abortMissionConfig.failOnError}"
+            )
             redirectLogs(javaTask)
         }
     }
