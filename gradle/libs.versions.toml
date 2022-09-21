@@ -1,6 +1,6 @@
 [versions]
 kotlin = "1.7.10"
-jupiter = "5.9.0"
+jupiter = "5.9.1"
 abortMission = "3.4.14"
 
 pluginPublishPlugin = "1.0.0"
