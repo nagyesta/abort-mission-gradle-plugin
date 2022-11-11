@@ -3,7 +3,7 @@ kotlin = "1.7.20"
 jupiter = "5.9.1"
 abortMission = "3.4.40"
 
-pluginPublishPlugin = "1.0.0"
+pluginPublishPlugin = "1.1.0"
 gitVersionerPlugin = "1.6.7"
 indexScanPlugin = "2.5.3"
 owaspPlugin = "7.3.0"
