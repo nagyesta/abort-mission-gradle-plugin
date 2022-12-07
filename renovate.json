@@ -11,5 +11,5 @@
   "github-actions": {
     "pinDigests": true
   },
-  "ignorePaths": [ ".github/workflows/**", "gradle-tests/**" ]
+  "ignorePaths": [ "gradle-tests/**" ]
 }
