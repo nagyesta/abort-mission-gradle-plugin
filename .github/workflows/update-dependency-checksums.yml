@@ -31,7 +31,9 @@ jobs:
       - name: "Remove previous version"
         run: cp gradle/verification-metadata-clean.xml gradle/verification-metadata.xml
       - name: "Update checksums"
-        run: ./gradlew --write-verification-metadata sha256
+        uses: gradle/gradle-build-action@3fbe033aaae657f011f88f29be9e65ed26bd29ef # v2.3.3
+        with:
+          arguments: --write-verification-metadata sha256
       - name: "Git commit"
         run: |
           git config --global user.name 'Esta Nagy'

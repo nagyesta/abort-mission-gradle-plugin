@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     `java-gradle-plugin`
     kotlin("jvm") version libs.versions.kotlin.get()
@@ -35,6 +37,10 @@ versioner {
         prefix = "v"
         useCommitMessage = true
     }
+}
+
+tasks {
+    withType<KotlinCompile> { kotlinOptions { jvmTarget = "11" } }
 }
 
 dependencies {

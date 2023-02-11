@@ -17,6 +17,7 @@ on:
       - '.github/ISSUE_TEMPLATE/**'
       - '.github/assets/**'
       - '.github/workflows/**'
+      - '.github/pr-labeler.yml'
       - 'renovate.json'
       - '.whitesource'
       - 'gradle/libs.versions.toml'
@@ -38,22 +39,20 @@ jobs:
         with:
           distribution: temurin
           java-version: 11
-      - uses: actions/cache@6998d139ddd3e68c71e9e398d8e40b71a2f39812 # v3.2.5
-        with:
-          path: |
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-wrapper-
       - name: Build with Gradle
-        run: >
-          ./gradlew tagVersion build
-          -PgithubUser=${{ secrets.PUBLISH_USER_NAME }}
-          -PgithubToken=${{ secrets.PUBLISH_KEY }}
+        uses: gradle/gradle-build-action@3fbe033aaae657f011f88f29be9e65ed26bd29ef # v2.3.3
+        with:
+          gradle-home-cache-cleanup: true
+          arguments: |
+            tagVersion build
+            -PgithubUser=${{ secrets.PUBLISH_USER_NAME }}
+            -PgithubToken=${{ secrets.PUBLISH_KEY }}
       - name: Publish with Gradle
-        run: >
-          ./gradlew publish publishPlugins
-          -PgithubUser=${{ secrets.PUBLISH_USER_NAME }}
-          -PgithubToken=${{ secrets.PUBLISH_KEY }}
-          -Pgradle.publish.key=${{ secrets.GRADLE_KEY }}
-          -Pgradle.publish.secret=${{ secrets.GRADLE_SECRET }}
+        uses: gradle/gradle-build-action@3fbe033aaae657f011f88f29be9e65ed26bd29ef # v2.3.3
+        with:
+          arguments: |
+            publish publishPlugins
+            -PgithubUser=${{ secrets.PUBLISH_USER_NAME }}
+            -PgithubToken=${{ secrets.PUBLISH_KEY }}
+            -Pgradle.publish.key=${{ secrets.GRADLE_KEY }}
+            -Pgradle.publish.secret=${{ secrets.GRADLE_SECRET }}
