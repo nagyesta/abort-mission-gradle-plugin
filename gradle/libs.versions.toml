@@ -1,7 +1,7 @@
 [versions]
 kotlin = "1.8.10"
 jupiter = "5.9.2"
-abortMission = "3.5.81"
+abortMission = "3.5.103"
 
 pluginPublishPlugin = "1.2.0"
 gitVersionerPlugin = "1.6.7"
