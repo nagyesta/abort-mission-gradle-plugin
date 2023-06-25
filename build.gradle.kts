@@ -51,20 +51,17 @@ dependencies {
 }
 
 gradlePlugin {
+    website.set("https://github.com/nagyesta/abort-mission-gradle-plugin")
+    vcsUrl.set("https://github.com/nagyesta/abort-mission-gradle-plugin")
     plugins {
         create("abortMissionPlugin") {
             displayName = "Abort-Mission Gradle Plugin"
             description = "Adds Abort-Mission reporting support to your Gradle build"
             id = "com.github.nagyesta.abort-mission-gradle-plugin"
             implementationClass = "com.github.nagyesta.abortmission.gradle.AbortMissionPlugin"
+            tags.set(listOf("testing", "jupiter", "testng", "abort-mission"))
         }
     }
-}
-
-pluginBundle {
-    website = "https://github.com/nagyesta/abort-mission-gradle-plugin"
-    vcsUrl = "https://github.com/nagyesta/abort-mission-gradle-plugin"
-    tags = listOf("testing", "jupiter", "testng", "abort-mission")
 }
 
 tasks.test {
