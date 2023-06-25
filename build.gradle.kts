@@ -47,7 +47,6 @@ dependencies {
     implementation(libs.kotlin.stdlib)
     testImplementation(libs.jupiter.core)
     testImplementation(gradleTestKit())
-    testImplementation(libs.abort.mission.strongback.rmi)
 }
 
 gradlePlugin {

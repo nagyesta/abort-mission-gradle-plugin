@@ -1,7 +1,6 @@
 [versions]
 kotlin = "1.8.22"
 jupiter = "5.9.3"
-abortMission = "4.0.0"
 
 pluginPublishPlugin = "1.2.0"
 gitVersionerPlugin = "1.6.7"
@@ -11,7 +10,6 @@ owaspPlugin = "8.3.1"
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 jupiter-core = { module = "org.junit.jupiter:junit-jupiter", version.ref = "jupiter" }
-abort-mission-strongback-rmi = { module = "com.github.nagyesta.abort-mission.strongback:abort.strongback-rmi-supplier", version.ref = "abortMission" }
 
 [plugins]
 plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "pluginPublishPlugin" }

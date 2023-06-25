@@ -61,20 +61,6 @@ class AbortMissionPlugin : Plugin<Project> {
         project: Project
     ) {
         forEachTestTasks(project, abortMissionConfig.skipTestAutoSetup) {
-            if (!abortMissionConfig.skipStrongbackConfig) {
-                if (abortMissionConfig.strongbackPassword.isNotBlank()) {
-                    this.systemProperty(
-                        "abort-mission.telemetry.server.password",
-                        abortMissionConfig.strongbackPassword
-                    )
-                }
-                if (abortMissionConfig.strongbackPort > 0) {
-                    this.systemProperty(
-                        "abort-mission.telemetry.server.port",
-                        abortMissionConfig.strongbackPort
-                    )
-                }
-            }
             this.systemProperty(REPORT_DIR_PROPERTY, abortMissionConfig.reportDirectory.absolutePath)
             this.finalizedBy(abortMissionTask)
         }
