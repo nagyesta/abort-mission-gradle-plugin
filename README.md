@@ -28,7 +28,7 @@ to find out more.
 
 ```groovy
 plugins {
-    id "com.github.nagyesta.abort-mission-gradle-plugin" version "3.0.0"
+    id "com.github.nagyesta.abort-mission-gradle-plugin" version "4.0.0"
 }
 
 repositories {
