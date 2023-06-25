@@ -54,12 +54,6 @@ abortMission {
     // - Setting the "abortMissionReport" task to the "finalize" the
     //   test task 
     skipTestAutoSetup false
-    //Indicates whether we need to configure the strongback properties
-    //as well when test autoconfiguration is done.
-    //WARNING: If you are using a strongback, you will need to take care
-    //of the full lifecycle externally due to difficulties with Gradle
-    //background threads. This should include startup, shutdown
-    skipStrongbackConfig true
     //Define whether we want to use relaxed schema for JSON validation.
     //Particularly useful when the Cucumber Booster is used or in case of
     //a very special class name that does not match the basic regexp used.
@@ -70,11 +64,6 @@ abortMission {
     //Controls whether the report generator should fail if any failed
     //test cases where in the report
     failOnError false
-    //The port we want to use for the Strongback
-    strongbackPort 29542
-    //The optional password used for authentication when the Strongback
-    //service is started or stopped
-    strongbackPassword "S3cr3t"
 }
 ```
 
@@ -84,5 +73,5 @@ abortMission {
 
 ## Limitations
 
-Strongbacks lifecycle is no longer supported while using 2.2.0 or later version of
-this plugin, or Gradle version above 7.2 (non-inclusive).
+- Strongbacks lifecycle is no longer supported while using 2.2.0 or later version of this plugin, or Gradle version above 7.2 (non-inclusive).
+- Strongback functionality is completely removed in 4.1.x release as Strongbacks were very slow and hard to maintain.
