@@ -46,6 +46,7 @@ tasks {
 dependencies {
     implementation(libs.kotlin.stdlib)
     testImplementation(libs.jupiter.core)
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation(gradleTestKit())
 }
 
