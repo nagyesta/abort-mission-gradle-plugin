@@ -4,7 +4,7 @@ jupiter = "5.10.1"
 
 pluginPublishPlugin = "1.2.1"
 gitVersionerPlugin = "1.6.7"
-indexScanPlugin = "2.6.1"
+indexScanPlugin = "2.6.2"
 owaspPlugin = "9.0.7"
 
 [libraries]
