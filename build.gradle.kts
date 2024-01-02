@@ -40,7 +40,7 @@ versioner {
 }
 
 tasks {
-    withType<KotlinCompile> { kotlinOptions { jvmTarget = "11" } }
+    withType<KotlinCompile> { kotlinOptions { jvmTarget = "17" } }
 }
 
 dependencies {

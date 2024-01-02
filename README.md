@@ -1,7 +1,7 @@
 ![Abort-Mission](.github/assets/Abort-Mission-logo_export_transparent_640.png)
 
 [![GitHub license](https://img.shields.io/github/license/nagyesta/abort-mission-gradle-plugin?color=informational)](https://raw.githubusercontent.com/nagyesta/abort-mission-gradle-plugin/main/LICENSE)
-[![Java version](https://img.shields.io/badge/Java%20version-11-yellow?logo=java)](https://img.shields.io/badge/Java%20version-11-yellow?logo=java)
+[![Java version](https://img.shields.io/badge/Java%20version-17-yellow?logo=java)](https://img.shields.io/badge/Java%20version-17-yellow?logo=java)
 [![latest-release](https://img.shields.io/github/v/tag/nagyesta/abort-mission-gradle-plugin?color=blue&logo=git&label=releases&sort=semver)](https://github.com/nagyesta/abort-mission-gradle-plugin/releases)
 [![Gradle Plugin](https://img.shields.io/badge/gradle-plugin-blue?logo=gradle)](https://plugins.gradle.org/plugin/com.github.nagyesta.abort-mission-gradle-plugin)
 [![JavaCI](https://img.shields.io/github/actions/workflow/status/nagyesta/abort-mission-gradle-plugin/gradle.yml?logo=github&branch=main)](https://github.com/nagyesta/abort-mission-gradle-plugin/actions/workflows/gradle.yml)
@@ -28,7 +28,7 @@ to find out more.
 
 ```groovy
 plugins {
-    id "com.github.nagyesta.abort-mission-gradle-plugin" version "4.0.0"
+    id "com.github.nagyesta.abort-mission-gradle-plugin" version "5.0.0"
 }
 
 repositories {
@@ -60,7 +60,7 @@ abortMission {
     relaxedValidation false
     //Sets the directory where we want to look for the JSON input file
     //and save the HTML output
-    reportDirectory file("${buildDir}/reports/abort-mission/")
+    reportDirectory layout.buildDirectory.dir("reports/abort-mission/").get().getAsFile()
     //Controls whether the report generator should fail if any failed
     //test cases where in the report
     failOnError false

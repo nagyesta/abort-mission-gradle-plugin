@@ -14,14 +14,14 @@ open class AbortMissionConfig(project: Project) {
         const val DEFAULT_VERSION = "+"
         const val DEFAULT_RELAXED_VALIDATION = false
         const val DEFAULT_SKIP_TEST_AUTO_SETUP = false
-        const val DEFAULT_REPORT_DIRECTORY = "/reports/abort-mission/"
+        const val DEFAULT_REPORT_DIRECTORY = "reports/abort-mission/"
         const val DEFAULT_FAIL_ON_ERROR = false
     }
 
     init {
         skipTestAutoSetup = DEFAULT_SKIP_TEST_AUTO_SETUP
         relaxedValidation = DEFAULT_RELAXED_VALIDATION
-        reportDirectory = File(project.buildDir, DEFAULT_REPORT_DIRECTORY)
+        reportDirectory = project.layout.buildDirectory.dir(DEFAULT_REPORT_DIRECTORY).get().asFile
         toolVersion = DEFAULT_VERSION
         failOnError = DEFAULT_FAIL_ON_ERROR
     }
