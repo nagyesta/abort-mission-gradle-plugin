@@ -5,7 +5,7 @@ jupiter = "5.10.2"
 pluginPublishPlugin = "1.2.1"
 gitVersionerPlugin = "1.6.7"
 indexScanPlugin = "2.7.0"
-owaspPlugin = "9.0.9"
+owaspPlugin = "9.0.10"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
