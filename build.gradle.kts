@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.util.*
 
 plugins {
     `java-gradle-plugin`
@@ -8,6 +9,8 @@ plugins {
     alias(libs.plugins.versioner)
     alias(libs.plugins.index.scan)
     alias(libs.plugins.owasp.dependencycheck)
+    alias(libs.plugins.cyclonedx.bom)
+    alias(libs.plugins.licensee.plugin)
 }
 
 group = "com.github.nagyesta.abort-mission"
@@ -50,6 +53,7 @@ dependencies {
     testImplementation(gradleTestKit())
 }
 
+@Suppress("UnstableApiUsage")
 gradlePlugin {
     website.set("https://github.com/nagyesta/abort-mission-gradle-plugin")
     vcsUrl.set("https://github.com/nagyesta/abort-mission-gradle-plugin")
@@ -71,6 +75,57 @@ tasks.test {
 repositories {
     mavenCentral()
 }
+
+tasks.cyclonedxBom {
+    setIncludeConfigs(listOf("runtimeClasspath"))
+    setSkipConfigs(listOf("compileClasspath", "testCompileClasspath"))
+    setSkipProjects(listOf())
+    setProjectType("library")
+    setSchemaVersion("1.5")
+    setDestination(file("build/reports"))
+    setOutputName("bom")
+    setOutputFormat("json")
+    //noinspection UnnecessaryQualifiedReference
+    val attachmentText = org.cyclonedx.model.AttachmentText()
+    attachmentText.setText(
+        Base64.getEncoder().encodeToString(
+            file("${project.rootProject.projectDir}/LICENSE").readBytes()
+        )
+    )
+    attachmentText.encoding = "base64"
+    attachmentText.contentType = "text/plain"
+    //noinspection UnnecessaryQualifiedReference
+    val license = org.cyclonedx.model.License()
+    license.name = "MIT License"
+    license.setLicenseText(attachmentText)
+    license.url = "https://raw.githubusercontent.com/nagyesta/abort-mission-gradle-plugin/main/LICENSE"
+    setLicenseChoice {
+        it.addLicense(license)
+    }
+}
+
+licensee {
+    allow("Apache-2.0")
+}
+
+val copyLegalDocs = tasks.register<Copy>("copyLegalDocs") {
+    from(file("${project.rootProject.projectDir}/LICENSE"))
+    from(layout.buildDirectory.file("reports/licensee/artifacts.json").get().asFile)
+    from(layout.buildDirectory.file("reports/bom.json").get().asFile)
+    into(layout.buildDirectory.dir("resources/main/META-INF").get().asFile)
+    rename("artifacts.json", "dependency-licenses.json")
+    rename("bom.json", "SBOM.json")
+}.get()
+//noinspection ConfigurationAvoidance
+if (project.name == "flight-evaluation-report") {
+    copyLegalDocs.dependsOn("processTemplates")
+}
+copyLegalDocs.dependsOn(tasks.licensee)
+copyLegalDocs.dependsOn(tasks.cyclonedxBom)
+tasks.javadoc.get().dependsOn(copyLegalDocs)
+tasks.jar.get().dependsOn(copyLegalDocs)
+tasks.pluginUnderTestMetadata.get().dependsOn(copyLegalDocs)
+tasks.processResources.get().finalizedBy(copyLegalDocs)
 
 publishing {
     repositories {
