@@ -116,10 +116,6 @@ val copyLegalDocs = tasks.register<Copy>("copyLegalDocs") {
     rename("artifacts.json", "dependency-licenses.json")
     rename("bom.json", "SBOM.json")
 }.get()
-//noinspection ConfigurationAvoidance
-if (project.name == "flight-evaluation-report") {
-    copyLegalDocs.dependsOn("processTemplates")
-}
 copyLegalDocs.dependsOn(tasks.licensee)
 copyLegalDocs.dependsOn(tasks.cyclonedxBom)
 tasks.javadoc.get().dependsOn(copyLegalDocs)
