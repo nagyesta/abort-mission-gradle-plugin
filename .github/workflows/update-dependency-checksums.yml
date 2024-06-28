@@ -22,7 +22,7 @@ jobs:
       - name: Remove previous version
         run: cp gradle/verification-metadata-clean.xml gradle/verification-metadata.xml
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@dbbdc275be76ac10734476cc723d82dfe7ec6eda # v3.4.2
+        uses: gradle/actions/setup-gradle@90ccf054e6b9905f30f98c938bce4c6acd323b6b # v1.3.3
         with:
           cache-disabled: true
       - name: Update checksums
