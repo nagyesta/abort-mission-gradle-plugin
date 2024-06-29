@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.PUBLISH_KEY }}
       - name: Set up JDK 17
-        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4.2.1
+        uses: actions/setup-java@204b974cf476e9709b6fab0c59007578676321c5 # v1.1.0
         with:
           distribution: temurin
           java-version: 17
