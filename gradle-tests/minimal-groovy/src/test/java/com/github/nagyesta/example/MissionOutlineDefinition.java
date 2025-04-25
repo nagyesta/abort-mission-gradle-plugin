@@ -12,8 +12,8 @@ public class MissionOutlineDefinition extends MissionOutline {
 
     @Override
     protected Map<String, Consumer<AbortMissionCommandOps>> defineOutline() {
-        return Collections.singletonMap("", ops -> {
-            ops.registerHealthCheck(MissionControl.reportOnlyEvaluator(MissionControl.matcher().anyClass().build()).build());
-        });
+        return Collections.singletonMap("", ops -> ops
+                .registerHealthCheck(MissionControl.reportOnlyEvaluator(MissionControl.matcher().anyClass().build()).build())
+        );
     }
 }

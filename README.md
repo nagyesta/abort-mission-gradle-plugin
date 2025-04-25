@@ -6,8 +6,8 @@
 [![Gradle Plugin](https://img.shields.io/badge/gradle-plugin-blue?logo=gradle)](https://plugins.gradle.org/plugin/com.github.nagyesta.abort-mission-gradle-plugin)
 [![JavaCI](https://img.shields.io/github/actions/workflow/status/nagyesta/abort-mission-gradle-plugin/gradle.yml?logo=github&branch=main)](https://github.com/nagyesta/abort-mission-gradle-plugin/actions/workflows/gradle.yml)
 
-[![code-climate-maintainability](https://img.shields.io/codeclimate/maintainability/nagyesta/abort-mission-gradle-plugin?logo=code%20climate)](https://img.shields.io/codeclimate/maintainability/nagyesta/abort-mission-gradle-plugin?logo=code%20climate)
-[![code-climate-tech-debt](https://img.shields.io/codeclimate/tech-debt/nagyesta/abort-mission-gradle-plugin?logo=code%20climate)](https://img.shields.io/codeclimate/tech-debt/nagyesta/abort-mission-gradle-plugin?logo=code%20climate)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=nagyesta_abort-mission-gradle-plugin&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=nagyesta_abort-mission-gradle-plugin)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=nagyesta_abort-mission-gradle-plugin&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=nagyesta_abort-mission-gradle-plugin)
 [![last_commit](https://img.shields.io/github/last-commit/nagyesta/abort-mission-gradle-plugin?logo=git)](https://img.shields.io/github/last-commit/nagyesta/abort-mission-gradle-plugin?logo=git)
 [![wiki](https://img.shields.io/badge/See-Wiki-informational)](https://github.com/nagyesta/abort-mission/wiki)
 
@@ -24,7 +24,7 @@ to find out more.
 
 ### Minimal configuration
 
-#### build.gradle
+**build.gradle**
 
 ```groovy
 plugins {
@@ -40,7 +40,7 @@ repositories {
 
 The plugin can be configured using the following DSL
 
-#### build.gradle
+**build.gradle**
 
 ```groovy
 abortMission {
@@ -52,7 +52,7 @@ abortMission {
     // - Adding the "abort-mission.report.directory" System.property
     //   to define where we want to store the JSON report
     // - Setting the "abortMissionReport" task to the "finalize" the
-    //   test task 
+    //   test task
     skipTestAutoSetup false
     //Define whether we want to use relaxed schema for JSON validation.
     //Particularly useful when the Cucumber Booster is used or in case of

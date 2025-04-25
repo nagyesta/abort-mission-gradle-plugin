@@ -1,17 +1,10 @@
 {
-  "extends": [
-    "config:recommended",
-    ":gitSignOff"
-  ],
-  "assignees": [
-    "nagyesta"
-  ],
+  "extends": ["config:recommended", ":gitSignOff"],
+  "assignees": ["nagyesta"],
   "assigneesSampleSize": 1,
   "commitMessageSuffix": "{patch}",
   "github-actions": {
     "pinDigests": true
   },
-  "ignorePaths": [
-    "gradle-tests/**"
-  ]
+  "ignorePaths": ["gradle-tests/**"]
 }
