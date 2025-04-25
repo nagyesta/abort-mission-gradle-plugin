@@ -5,6 +5,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.JavaExec
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.testing.Test
 import java.io.File
 
@@ -41,7 +42,7 @@ class AbortMissionPlugin : Plugin<Project> {
             .findByType(AbortMissionConfig::class.java) ?: AbortMissionConfig(project)
         project.dependencies.add(CONFIGURATION_NAME, "$GROUP_ID:$ARTIFACT_ID:${abortMissionConfig.toolVersion}")
 
-        val abortMissionTask = defineAbortMissionReportTask(abortMissionConfig, project)
+        val abortMissionTask = defineAbortMissionReportTask(abortMissionConfig, project).get()
         setupTestTask(abortMissionConfig, abortMissionTask, project)
     }
 
@@ -51,7 +52,7 @@ class AbortMissionPlugin : Plugin<Project> {
         val testImpl = project.configurations.findByName(TEST_IMPLEMENTATION_CONFIGURATION_NAME)
         return testImpl?.dependencies?.any { dependency ->
             dependency.group.equals(CUCUMBER_BOOSTER_GROUP_ID)
-                    && dependency.name.equals(CUCUMBER_BOOSTER_ARTIFACT_ID)
+                    && dependency.name == CUCUMBER_BOOSTER_ARTIFACT_ID
         } == true
     }
 
@@ -69,11 +70,11 @@ class AbortMissionPlugin : Plugin<Project> {
     private fun defineAbortMissionReportTask(
         abortMissionConfig: AbortMissionConfig,
         project: Project
-    ): JavaExec {
+    ): TaskProvider<JavaExec> {
         val htmlFile = File(abortMissionConfig.reportDirectory, DEFAULT_HTML_FILE_NAME)
         val jsonFile = File(abortMissionConfig.reportDirectory, DEFAULT_JSON_FILE_NAME)
         val relaxedValidation = abortMissionConfig.relaxedValidation || hasCucumberDependency(project)
-        return project.tasks.create(TASK_NAME, JavaExec::class.java) { javaTask ->
+        return project.tasks.register(TASK_NAME, JavaExec::class.java) { javaTask ->
             javaTask.inputs.file(jsonFile)
             javaTask.outputs.file(htmlFile)
             javaTask.mainClass.set("com.github.nagyesta.abortmission.reporting.AbortMissionFlightEvaluationReportApp")

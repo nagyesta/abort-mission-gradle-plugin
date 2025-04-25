@@ -1,12 +1,12 @@
 # Contribution guidelines
 
-
 First of all, thank you for considering a contribution to Abort-Mission!
 
 ## Purpose
 
 This document exists to let contributors navigate how we like to maintain this project.
 A contribution might be any of the following:
+
 - Writing a bug report
 - Submitting a feature request
 - Giving feedback on the repository contents or the wiki
@@ -61,4 +61,4 @@ conclusions if something is not clear. It is a good practice to give feedback or
 provide suggestions in the form of a question. Code reviews are a dialogue after
 all!
 
-## Thank you!
+## Thank you

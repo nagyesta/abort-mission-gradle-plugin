@@ -41,8 +41,8 @@ jobs:
           github-token: ${{ secrets.PUBLISH_KEY }}
           script: |
             github.rest.pulls.create({
-              owner: "${{ github.repository_owner }}",
-              repo: "abort-mission-gradle-plugin",
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               head: "feature/update-dependency-checksums-${{ github.run_number }}",
               base: "main",
               title: "Updating dependency checksums {patch}"

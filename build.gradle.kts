@@ -48,12 +48,13 @@ tasks {
 
 dependencies {
     implementation(libs.kotlin.stdlib)
+
     testImplementation(libs.jupiter.core)
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation(gradleTestKit())
+
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-@Suppress("UnstableApiUsage")
 gradlePlugin {
     website.set("https://github.com/nagyesta/abort-mission-gradle-plugin")
     vcsUrl.set("https://github.com/nagyesta/abort-mission-gradle-plugin")
@@ -109,6 +110,8 @@ licensee {
 }
 
 val copyLegalDocs = tasks.register<Copy>("copyLegalDocs") {
+    group = "documentation"
+    description = "Copies legal files and reports."
     from(file("${project.rootProject.projectDir}/LICENSE"))
     from(layout.buildDirectory.file("reports/licensee/artifacts.json").get().asFile)
     from(layout.buildDirectory.file("reports/bom.json").get().asFile)
