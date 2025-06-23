@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.*
 
@@ -43,7 +44,7 @@ versioner {
 }
 
 tasks {
-    withType<KotlinCompile> { kotlinOptions { jvmTarget = "17" } }
+    withType<KotlinCompile> { compilerOptions { jvmTarget = JvmTarget.JVM_17 } }
 }
 
 dependencies {
