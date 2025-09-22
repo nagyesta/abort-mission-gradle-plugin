@@ -6,7 +6,7 @@ pluginPublishPlugin = "2.0.0"
 gitVersionerPlugin = "1.6.7"
 indexScanPlugin = "3.1.2"
 owaspPlugin = "12.1.5"
-cycloneDxBomPlugin = "2.4.0"
+cycloneDxBomPlugin = "2.4.1"
 licenseePlugin = "1.13.0"
 
 [libraries]
