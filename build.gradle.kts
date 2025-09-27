@@ -1,3 +1,4 @@
+import org.cyclonedx.Version
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.*
@@ -60,13 +61,13 @@ gradlePlugin {
     website.set("https://github.com/nagyesta/abort-mission-gradle-plugin")
     vcsUrl.set("https://github.com/nagyesta/abort-mission-gradle-plugin")
     plugins {
-        create("abortMissionPlugin") {
+        create("abortMissionPlugin", fun PluginDeclaration.() {
             displayName = "Abort-Mission Gradle Plugin"
             description = "Adds Abort-Mission reporting support to your Gradle build"
             id = "com.github.nagyesta.abort-mission-gradle-plugin"
             implementationClass = "com.github.nagyesta.abortmission.gradle.AbortMissionPlugin"
             tags.set(listOf("testing", "jupiter", "testng", "abort-mission"))
-        }
+        })
     }
 }
 
@@ -79,20 +80,16 @@ repositories {
 }
 
 tasks.cyclonedxBom {
-    setIncludeConfigs(listOf("runtimeClasspath"))
-    setSkipConfigs(listOf("compileClasspath", "testCompileClasspath"))
-    setSkipProjects(listOf())
-    setProjectType("library")
-    setSchemaVersion("1.5")
-    setDestination(file("build/reports"))
-    setOutputName("bom")
-    setOutputFormat("json")
+    projectType.set(org.cyclonedx.model.Component.Type.LIBRARY)
+    schemaVersion.set(Version.VERSION_16)
+    includeConfigs.set(listOf("runtimeClasspath"))
+    skipConfigs.set(listOf("compileClasspath", "testCompileClasspath"))
+    skipProjects.set(listOf())
+    jsonOutput = project.layout.buildDirectory.file("reports/bom.json").get().asFile
     //noinspection UnnecessaryQualifiedReference
     val attachmentText = org.cyclonedx.model.AttachmentText()
-    attachmentText.setText(
-        Base64.getEncoder().encodeToString(
-            file("${project.rootProject.projectDir}/LICENSE").readBytes()
-        )
+    attachmentText.text = Base64.getEncoder().encodeToString(
+        file("${project.rootProject.projectDir}/LICENSE").readBytes()
     )
     attachmentText.encoding = "base64"
     attachmentText.contentType = "text/plain"
@@ -101,8 +98,8 @@ tasks.cyclonedxBom {
     license.name = "MIT License"
     license.setLicenseText(attachmentText)
     license.url = "https://raw.githubusercontent.com/nagyesta/abort-mission-gradle-plugin/main/LICENSE"
-    setLicenseChoice {
-        it.addLicense(license)
+    licenseChoice = org.cyclonedx.model.LicenseChoice().apply {
+        addLicense(license)
     }
 }
 
