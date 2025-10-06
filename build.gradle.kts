@@ -79,12 +79,11 @@ repositories {
     mavenCentral()
 }
 
-tasks.cyclonedxBom {
+tasks.cyclonedxDirectBom {
     projectType.set(org.cyclonedx.model.Component.Type.LIBRARY)
     schemaVersion.set(Version.VERSION_16)
     includeConfigs.set(listOf("runtimeClasspath"))
     skipConfigs.set(listOf("compileClasspath", "testCompileClasspath"))
-    skipProjects.set(listOf())
     jsonOutput = project.layout.buildDirectory.file("reports/bom.json").get().asFile
     //noinspection UnnecessaryQualifiedReference
     val attachmentText = org.cyclonedx.model.AttachmentText()
@@ -118,7 +117,7 @@ val copyLegalDocs = tasks.register<Copy>("copyLegalDocs") {
     rename("bom.json", "SBOM.json")
 }.get()
 copyLegalDocs.dependsOn(tasks.licensee)
-copyLegalDocs.dependsOn(tasks.cyclonedxBom)
+copyLegalDocs.dependsOn(tasks.cyclonedxDirectBom)
 tasks.javadoc.get().dependsOn(copyLegalDocs)
 tasks.jar.get().dependsOn(copyLegalDocs)
 tasks.pluginUnderTestMetadata.get().dependsOn(copyLegalDocs)
