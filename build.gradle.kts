@@ -123,6 +123,22 @@ tasks.jar.get().dependsOn(copyLegalDocs)
 tasks.pluginUnderTestMetadata.get().dependsOn(copyLegalDocs)
 tasks.processResources.get().finalizedBy(copyLegalDocs)
 
+
+val writeVersion = tasks.register<DefaultTask>("writeVersion") {
+    group = "versioning"
+    description = "Writes project version to a file."
+    outputs.file(layout.buildDirectory.file("version").get().asFile)
+    inputs.property("version", project.version)
+
+    val versionFile = file("build/version")
+    val versionText = project.version.toString()
+    doLast {
+        versionFile.writeText("v${versionText}")
+    }
+    mustRunAfter(tasks.clean)
+}.get()
+tasks.build.get().dependsOn(writeVersion)
+
 publishing {
     repositories {
         maven {

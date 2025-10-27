@@ -32,7 +32,6 @@ class AbortMissionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         project.extensions.create(EXTENSION_NAME, AbortMissionConfig::class.java, project)
         project.configurations.create(CONFIGURATION_NAME)
-            .setVisible(true)
             .description = "Abort-Mission report generator"
         project.afterEvaluate(this@AbortMissionPlugin::afterEvaluateHandler)
     }
