@@ -34,7 +34,7 @@ versioner {
     git {
         authentication {
             https {
-                token = project.properties["githubToken"]?.toString()
+                token = project.findProperty("githubToken")?.toString()
             }
         }
     }
@@ -123,6 +123,7 @@ copyLegalDocs.dependsOn(tasks.cyclonedxDirectBom)
 tasks.javadoc.get().dependsOn(copyLegalDocs)
 tasks.jar.get().dependsOn(copyLegalDocs)
 tasks.pluginUnderTestMetadata.get().dependsOn(copyLegalDocs)
+tasks.validatePlugins.get().dependsOn(copyLegalDocs)
 tasks.processResources.get().finalizedBy(copyLegalDocs)
 
 
@@ -147,8 +148,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/nagyesta/abort-mission-gradle-plugin")
             credentials {
-                username = project.properties["githubUser"]?.toString()
-                password = project.properties["githubToken"]?.toString()
+                username = project.findProperty("githubUser")?.toString()
+                password = project.findProperty("githubToken")?.toString()
             }
         }
     }
