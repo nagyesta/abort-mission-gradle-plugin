@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.4.10"
-jupiter = "6.1.2"
+jupiter = "6.1.3"
 
 pluginPublishPlugin = "2.1.1"
 gitVersionerPlugin = "1.6.7"
